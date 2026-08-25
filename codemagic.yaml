@@ -2,64 +2,46 @@ workflows:
   toplist-android:
     name: TopList Android Build
     max_build_duration: 60
+
     environment:
       groups:
-        # Create this group in Codemagic UI > Environment Variables
-        # and add GOOGLE_SERVICES_JSON (Secret) inside it.
         - firebase_credentials
       flutter: stable
       java: 21
+
     scripts:
-      - name: Decode Firebase google-services.json from secret
+      - name: Decode Firebase configuration
         script: |
           set -e
-
           mkdir -p android/app
 
           if [ -z "$GOOGLE_SERVICES_JSON" ]; then
-            echo "ERROR: GOOGLE_SERVICES_JSON is missing from Codemagic Environment Variables."
-            echo "Add it under Codemagic > App settings > Environment variables,"
-            echo "as a Secret variable named GOOGLE_SERVICES_JSON containing the"
-            echo "Base64-encoded contents of your real google-services.json file."
+            echo "ERROR: GOOGLE_SERVICES_JSON is missing."
             exit 1
           fi
 
-          # Decode without ever echoing the secret or decoded contents to the log.
-          echo "$GOOGLE_SERVICES_JSON" | base64 --decode > android/app/google-services.json 2>/dev/null \
-            || echo "$GOOGLE_SERVICES_JSON" | base64 -d > android/app/google-services.json
+          echo "$GOOGLE_SERVICES_JSON" | base64 --decode > android/app/google-services.json
 
           test -s android/app/google-services.json || {
-            echo "ERROR: Failed to decode GOOGLE_SERVICES_JSON, or the resulting file is empty."
-            echo "Check that the Base64 value in Codemagic is valid and was not truncated."
+            echo "ERROR: Failed to create google-services.json"
             exit 1
           }
 
-          echo "google-services.json created successfully (contents not printed for security)."
+          echo "google-services.json created successfully."
 
-      - name: Get Flutter dependencies
+      - name: Flutter pub get
         script: |
           flutter pub get
 
-      - name: Flutter analyze
+      - name: Build Android AAB
         script: |
-          flutter analyze || true
-
-      - name: Flutter test
-        script: |
-          flutter test || true
-
-      - name: Build APK (release)
-        script: |
-          flutter build apk --release
-
-      - name: Build App Bundle (release)
-        script: |
-          flutter build appbundle --release
+          flutter build appbundle --debug
 
     artifacts:
-      - build/app/outputs/apk/release/*.apk
-      - build/app/outputs/bundle/release/*.aab
+      - build/**/outputs/**/*.aab
+      - build/**/outputs/**/*.apk
 
     publishing:
       email:
-        recipients: []
+        recipients:
+          - spsrepet@gmail.com
