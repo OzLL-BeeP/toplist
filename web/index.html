@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopList - Discover, Share, Create Music</title>
+    <meta name="description" content="Discover music. Share your favorites. Create your own.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #121212;
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        .container { max-width: 1000px; margin: 0 auto; padding: 0 24px; }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a1a1a 100%);
+            padding: 40px 24px;
+        }
+
+        .logo-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #FF8C00, #FFB347);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 32px;
+            font-size: 48px;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #ff5722, #ffc107);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero .tagline {
+            font-size: 20px;
+            color: #b0b0b0;
+            max-width: 500px;
+            margin-bottom: 48px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 16px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff5722, #ff9100);
+            color: white;
+            box-shadow: 0 8px 24px rgba(255, 87, 34, 0.35);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(255, 87, 34, 0.45);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid #333;
+        }
+
+        .btn-secondary:hover {
+            border-color: #ff5722;
+        }
+
+        /* Features */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #b0b0b0;
+            margin-bottom: 56px;
+            font-size: 16px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: #1E1E1E;
+            border-radius: 16px;
+            padding: 32px 24px;
+            border: 1px solid #2a2a2a;
+            transition: border-color 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: #ff5722;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #ff5722, #ffc107);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        .feature-card p {
+            color: #999;
+            font-size: 14px;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .price-card {
+            background: #1E1E1E;
+            border-radius: 16px;
+            padding: 32px 24px;
+            border: 1px solid #2a2a2a;
+            text-align: center;
+        }
+
+        .price-card.featured {
+            border-color: #ff5722;
+            background: linear-gradient(180deg, #241a15, #1E1E1E);
+            position: relative;
+        }
+
+        .badge-offer {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff5722;
+            color: white;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+
+        .price-card h3 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #999;
+            margin-bottom: 16px;
+        }
+
+        .price-old {
+            color: #666;
+            text-decoration: line-through;
+            font-size: 16px;
+        }
+
+        .price-current {
+            font-size: 40px;
+            font-weight: 700;
+            color: white;
+            margin: 8px 0;
+        }
+
+        .price-current span {
+            font-size: 16px;
+            color: #999;
+            font-weight: 400;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-top: 24px;
+            text-align: left;
+        }
+
+        .price-features li {
+            padding: 8px 0;
+            color: #ccc;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Download */
+        .download-section {
+            text-align: center;
+            padding: 80px 24px;
+            background: #1a1a1a;
+        }
+
+        .download-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 32px;
+        }
+
+        .platform-note {
+            margin-top: 24px;
+            color: #666;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: #666;
+            font-size: 13px;
+            border-top: 1px solid #222;
+        }
+
+        @media (max-width: 600px) {
+            .hero h1 { font-size: 36px; }
+            .hero .tagline { font-size: 16px; }
+            .btn { padding: 14px 28px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="logo-icon">🎵</div>
+        <h1>TOPLIST</h1>
+        <p class="tagline">Discover music. Share your favorites. Create your own.</p>
+        <div class="hero-buttons">
+            <a href="#download" class="btn btn-primary">📥 Install TopList</a>
+            <a href="#features" class="btn btn-secondary">Explore Features</a>
+        </div>
+    </section>
+
+    <section class="section" id="features">
+        <div class="container">
+            <h2 class="section-title">What is TopList?</h2>
+            <p class="section-subtitle">A place for music lovers to discover, share, create, and connect.</p>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Discover</h3>
+                    <p>Find new music shared by the community, curated to your taste.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Share</h3>
+                    <p>Share your favorite tracks from YouTube, Spotify, TikTok and more.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎼</div>
+                    <h3>Create</h3>
+                    <p>Build your own music and share it with the world.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3>Community</h3>
+                    <p>Comment, like, follow creators, and build your music identity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Choose your plan</h2>
+            <p class="section-subtitle">Unlock more features as a creator</p>
+
+            <div class="pricing-grid">
+                <div class="price-card">
+                    <h3>Free</h3>
+                    <div class="price-current">$0</div>
+                    <ul class="price-features">
+                        <li>✓ Share unlimited music</li>
+                        <li>✓ Rate & comment</li>
+                        <li>✓ Follow creators</li>
+                        <li>✓ Basic profile</li>
+                    </ul>
+                </div>
+
+                <div class="price-card">
+                    <h3>Pro</h3>
+                    <div class="price-current">$5<span>/month</span></div>
+                    <ul class="price-features">
+                        <li>✓ Everything in Free</li>
+                        <li>✓ PRO badge</li>
+                        <li>✓ Custom chat colors</li>
+                        <li>✓ Boosted visibility</li>
+                    </ul>
+                </div>
+
+                <div class="price-card featured">
+                    <span class="badge-offer">SPECIAL OFFER</span>
+                    <h3>Premium</h3>
+                    <div class="price-old">$15</div>
+                    <div class="price-current">$10<span>/month</span></div>
+                    <ul class="price-features">
+                        <li>✓ Everything in Pro</li>
+                        <li>✓ PREM badge</li>
+                        <li>✓ Create albums</li>
+                        <li>✓ Maximum visibility boost</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="download-section" id="download">
+        <h2 class="section-title">Get TopList</h2>
+        <p class="section-subtitle">Available now on Android</p>
+
+        <div class="download-buttons">
+            <a href="#" id="androidDownload" class="btn btn-primary">📱 Install APK for Android</a>
+            <a href="#" class="btn btn-secondary" style="opacity: 0.5; cursor: not-allowed;">🍎 iOS — Coming Soon</a>
+        </div>
+
+        <p class="platform-note">Android 8.0+ required · ~80MB · By installing you agree to our Terms of Service</p>
+    </section>
+
+    <footer>
+        <p>TopList © 2026 · Discover music. Share your favorites. Create your own.</p>
+    </footer>
+
+    <script>
+        document.getElementById('androidDownload').addEventListener('click', function(e) {
+            e.preventDefault();
+            const apkUrl = 'https://github.com/OzLL-BeeP/toplist/releases/latest/download/app-release.apk';
+            window.location.href = apkUrl;
+        });
+    </script>
+
+</body>
+</html>

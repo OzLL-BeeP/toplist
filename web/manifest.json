@@ -1,0 +1,11 @@
+{
+    "name": "TopList",
+    "short_name": "TopList",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#121212",
+    "theme_color": "#ff5722",
+    "description": "Discover music. Share your favorites. Create your own.",
+    "orientation": "portrait-primary",
+    "icons": []
+}
