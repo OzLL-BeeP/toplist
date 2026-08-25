@@ -4,8 +4,6 @@ workflows:
     max_build_duration: 60
 
     environment:
-      groups:
-        - firebase_credentials
       flutter: stable
       java: 21
 
