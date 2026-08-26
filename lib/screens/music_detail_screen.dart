@@ -28,13 +28,14 @@ class _MusicDetailScreenState extends State<MusicDetailScreen> {
 
   void _initializeYoutubePlayer() {
     final videoId = MusicModel.extractYouTubeId(widget.music.musicUrl);
-    
+
     if (videoId != null) {
-      _youtubeController = YoutubePlayerController(
-        initialVideoId: videoId,
-        flags: const YoutubePlayerFlags(
-          autoPlay: false,
+      _youtubeController = YoutubePlayerController.fromVideoId(
+        videoId: videoId,
+        autoPlay: false,
+        params: const YoutubePlayerParams(
           mute: false,
+          showControls: true,
         ),
       );
     }
@@ -42,7 +43,7 @@ class _MusicDetailScreenState extends State<MusicDetailScreen> {
 
   @override
   void dispose() {
-    _youtubeController.dispose();
+    _youtubeController.close();
     _commentController.dispose();
     super.dispose();
   }
@@ -72,11 +73,7 @@ class _MusicDetailScreenState extends State<MusicDetailScreen> {
             if (widget.music.source == MusicSource.youtube)
               YoutubePlayer(
                 controller: _youtubeController,
-                showVideoProgressIndicator: true,
-                progressIndicatorColor: const Color(0xFFff5722),
-                onReady: () {
-                  print('Player is ready');
-                },
+                aspectRatio: 16 / 9,
               )
             else
               Container(
