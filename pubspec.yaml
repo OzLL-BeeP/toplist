@@ -36,13 +36,14 @@ dev_dependencies:
 
   flutter_lints: ^3.0.0
 
-# flutter_inappwebview is pulled in transitively by another package at
-# an old version (5.8.0) that has no Android namespace declared, which
-# breaks AGP 8.x builds requiring an explicit namespace. This override
-# forces resolution to a modern release that declares one properly.
-# See: requirement to upgrade rather than patch .pub-cache directly.
+# youtube_player_flutter 8.1.2 depends directly on flutter_inappwebview and
+# is written against its 5.x API (passes plain Uri, not WebUri). Overriding
+# to 6.x breaks compilation with a WebUri type mismatch. Overriding to an
+# old 5.8.0 breaks Android builds due to a missing namespace declaration.
+# 5.7.2+3 is the latest 5.x release that declares a valid Android namespace
+# while keeping the Uri-based API youtube_player_flutter 8.1.2 expects.
 dependency_overrides:
-  flutter_inappwebview: ^6.1.5
+  flutter_inappwebview: 5.7.2+3
 
 flutter:
   uses-material-design: true
