@@ -16,7 +16,7 @@ workflows:
 
           if [ -z "$GOOGLE_SERVICES_JSON" ]; then
             echo "ERROR: GOOGLE_SERVICES_JSON is missing."
-            echo "Make sure the variable exists in the firebase_credentials group."
+            echo "Make sure GOOGLE_SERVICES_JSON exists in the firebase_credentials group."
             exit 1
           fi
 
@@ -30,27 +30,17 @@ workflows:
           fi
 
           echo "Firebase configuration created successfully."
-          ls -lh android/app/google-services.json
 
-      - name: Verify Firebase configuration
-        script: |
-          set -e
-
-          if [ ! -f android/app/google-services.json ]; then
-            echo "ERROR: android/app/google-services.json does not exist."
-            exit 1
-          fi
-
-          echo "OK: Firebase configuration file exists."
-
-      - name: Build Android
+      - name: Get Flutter dependencies
         script: |
           flutter pub get
-          flutter build appbundle --debug
+
+      - name: Build Android APK
+        script: |
+          flutter build apk --release -t lib/main.dart
 
     artifacts:
-      - build/**/outputs/**/*.aab
-      - build/**/outputs/**/*.apk
+      - build/app/outputs/flutter-apk/*.apk
 
     publishing:
       email:
