@@ -8,26 +8,26 @@ workflows:
       java: 21
 
     scripts:
+      - name: Check Firebase secret
+        script: |
+          set -e
+
+          if [ -z "$GOOGLE_SERVICES_JSON" ]; then
+            echo "ERROR: GOOGLE_SERVICES_JSON is missing from Codemagic."
+            exit 1
+          fi
+
+          echo "Firebase secret detected."
+
       - name: Decode Firebase configuration
         script: |
           set -e
 
-          echo "Checking Firebase secret..."
-
-          if [ -z "$GOOGLE_SERVICES_JSON" ]; then
-            echo "ERROR: GOOGLE_SERVICES_JSON is missing."
-            echo "Make sure GOOGLE_SERVICES_JSON exists in the firebase_credentials group."
-            exit 1
-          fi
-
           mkdir -p android/app
 
-          echo "$GOOGLE_SERVICES_JSON" | base64 --decode > android/app/google-services.json
+          printf '%s' "$GOOGLE_SERVICES_JSON" | base64 --decode > android/app/google-services.json
 
-          if [ ! -s android/app/google-services.json ]; then
-            echo "ERROR: google-services.json was not created."
-            exit 1
-          fi
+          test -s android/app/google-services.json
 
           echo "Firebase configuration created successfully."
 
@@ -41,8 +41,3 @@ workflows:
 
     artifacts:
       - build/app/outputs/flutter-apk/*.apk
-
-    publishing:
-      email:
-        recipients:
-          - spsrepet@gmail.com
