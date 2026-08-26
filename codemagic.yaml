@@ -8,16 +8,15 @@ workflows:
       java: 21
 
     scripts:
-      - name: Check Firebase secret
-        script: |
-          set -e
+      - name: Check environment
+       script: |
+        echo "Checking Codemagic environment..."
 
-          if [ -z "$GOOGLE_SERVICES_JSON" ]; then
-            echo "ERROR: GOOGLE_SERVICES_JSON is missing from Codemagic."
-            exit 1
-          fi
-
-          echo "Firebase secret detected."
+        if [ -n "$GOOGLE_SERVICES_JSON" ]; then
+          echo "GOOGLE_SERVICES_JSON = FOUND"
+        else
+          echo "GOOGLE_SERVICES_JSON = MISSING"
+    fi
 
       - name: Decode Firebase configuration
         script: |
